@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Cancelamentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora de Cancelamentos</h2>
+        <label for="vendas">Digite o valor de vendas (R$):</label>
+        <input type="text" id="vendas" placeholder="Ex: 477744,90">
+        
+        <label for="cancelamentoAtual">Digite a porcentagem de cancelamento (%):</label>
+        <input type="text" id="cancelamentoAtual" placeholder="Ex: 2,3">
+        
+        <button onclick="calcular()">Calcular</button>
+
+        <div class="result">
+            <p id="valorCancelado"></p>
+            <p id="valorToleravel"></p>
+            <p id="vendaNecessaria"></p>
+            <p id="diferencaCota"></p>
+        </div>
+    </div>
+
+    <script>
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function calcular() {
+            const vendas = parseFloat(document.getElementById('vendas').value.replace(',', '.'));
+            const cancelamentoAtual = parseFloat(document.getElementById('cancelamentoAtual').value.replace(',', '.'));
+
+            const metaCancelamento = 1.8 / 100; // Meta de cancelamento de 1,8%
+            const valorCancelado = vendas * (cancelamentoAtual / 100);
+            const valorToleravel = vendas * metaCancelamento;
+            const vendaNecessaria = valorCancelado / metaCancelamento;
+            const diferencaCota = vendaNecessaria - vendas;
+
+            document.getElementById('valorCancelado').innerText = `Esse é o valor cancelado: ${formatCurrency(valorCancelado)}`;
+            document.getElementById('valorToleravel').innerText = `Esse é o valor que deve vender para estar dentro do índice tolerável: ${formatCurrency(valorToleravel)}`;
+            document.getElementById('vendaNecessaria').innerText = `Valor necessário para atingir a meta: ${formatCurrency(vendaNecessaria)}`;
+            document.getElementById('diferencaCota').innerText = `Diferença da cota atual: ${formatCurrency(diferencaCota)}`;
+        }
+    </script>
+</body>
+</html>
